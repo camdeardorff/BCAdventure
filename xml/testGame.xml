@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<adventure title="What's inside?">
+
+	<dilemma id="0">
+		<prompt>
+			<message>The Front Door is locked.</message>
+			<message>But a window has been broken!</message>
+		</prompt>
+		<actions>
+
+			<action>
+				<message>Investigate the window.</message>
+				<dilemma id="1">
+					<prompt>
+						<message>It looks like someone has broken in!</message>
+						<message>There are some weird sounds coming from inside.</message>
+					</prompt>
+					<actions>
+
+						<action>
+							<message>Climb through the window.</message>
+							<dilemma id="4">
+								<prompt>
+									<message>Ouch! You fell onto the glass from the window... clutz.</message>
+									<message>Something just moved through that hallway!</message>
+								</prompt>
+								<actions>
+
+									<action>
+										<message>Run it down!</message>
+										<resolution>You catch a child running in the house with a match</resolution>
+									</action>
+
+									<action>
+										<message>Sneak over and peak down the hallway.</message>
+										<resolution>There is a child in the corner lighting your curtain on fire</resolution>
+									</action>
+								</actions>
+							</dilemma>
+						</action>
+
+						<action>
+							<message>Call the police</message>
+							<dilemma href="2"></dilemma>
+						</action>
+
+					</actions>
+				</dilemma>
+			</action>
+
+			<action> 
+				<message>Call the police.</message>
+				<dilemma id="2">
+					<prompt>
+						<message>There are some weird sounds coming from inside.</message>
+						<message>The 911 operator says to find a safe place</message>
+					</prompt>
+					<actions>
+
+						<action>
+							<message>Walk to the nearby park.</message>
+							<dilemma id="5">
+								<prompt>
+									<message>You see smoke rising from the direction of your house.</message>
+								</prompt>
+								<actions>
+
+									<action>
+										<message>Call the fire department.</message>
+										<resolution>The fire deptartment arrives to a pile of dust</resolution>
+									</action>
+
+									<action>
+										<message>Go back to the house.</message>
+										<resolution>To late, the house is ablaze!</resolution>
+									</action>
+
+								</actions>
+							</dilemma>
+						</action>
+
+						<action>
+							<message>Look inside through the broken window.</message>
+							<dilemma href="1"></dilemma>
+						</action>
+					</actions>
+				</dilemma>
+			</action>
+
+		</actions>
+	</dilemma>
+
+</adventure>
+
+
+
