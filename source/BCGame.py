@@ -1,4 +1,3 @@
-
 import time
 import sys
 import random
@@ -53,24 +52,45 @@ class BCGame:
 		if dilemma == None:
 			return
 		else:
-			if dilemma.hasActions():
+			if not dilemma.hasActions():
+				print("Malformed dilemma, contains no actions. Dilemma: ", dilemma)
+			else:
+				# provided dilemma has an action, show it and get a choice from the user
 				self.__showDilemma(dilemma)
-				choice = self.__getBinaryInputFromMessage("")
-				if choice == -1 and self.debug:
+				userChoice = self.__getBinaryInputFromMessage("")
+				# act on the user's choice
+				if self.debug and userChoice == -1:
+					# debug mode, -1 meand to go up the tree
 					chosenAction = dilemma.getParent().getParent().getParent()
 				else:
-					chosenAction = dilemma.getActions()[choice]
+					chosenAction = dilemma.getActions()[userChoice]
+					# determine what to do with the action selected
+					if chosenAction.hasDilemma():
+						# recurssive move down to the dilemma of the chosen action
+						chosenDilemma = chosenAction.getDilemma()
 
+						# check if this dilemma references another one
+						# normally this is not the case
+						if not chosenDilemma.hasReference():
+							# the dilemma does not reference another dilemma, this is normal case
+							self.__nextStep(chosenDilemma)
 
-				if chosenAction.hasDilemma():
-					self.__nextStep(chosenAction.getDilemma())
-				elif chosenAction.hasResolution():
-					self.__showResolution(chosenAction.getResolution())
-				else:
-					print("there is something wrong with action: ", chosenAction)
-			else:
-				print("there is something wrong with dilemma: ", dilemma)
+						else:
+							# the dilemma points to another one by id reference
+							# get the dilemma that was referenced
+							referencedDilemma = self.adventure.findDilemmaWithID(chosenDilemma.getReference())
+							# check whether or not the referenced dilemma is a good one
+							if referencedDilemma == None:
+								print("Failed to get dilemma referenced with an ID of ", chosenDilemma.getReference())
+							else:
+								self.__nextStep(referencedDilemma)
 
+					# this action does not have a dilemma, it has a resolution. End the game		
+					elif chosenAction.hasResolution():
+						self.__showResolution(chosenAction.getResolution())
+					else:
+						print("Malformed action, contains no dilemma, or resolution. Action: ", chosenAction)
+			
 
 
 	def __showDilemma(self, dilemma):
@@ -115,33 +135,10 @@ class BCGame:
 
 
 	def __creepyPrint(self, message):
-		for character in message:
-			sys.stdout.write( character )
-			sys.stdout.flush()
-			time.sleep(random.random() * 0.15)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		if self.debug != True:
+			for character in message:
+				sys.stdout.write( character )
+				sys.stdout.flush()
+				time.sleep(random.random() * 0.15)
+		else:
+			print(message)

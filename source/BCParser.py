@@ -57,28 +57,9 @@ class BCParser:
 			else:
 				return
 
-	
-	def __resolveJumps(self, adventure, item, dilemma):
-		if dilemma != None:
-			if dilemma.hasReference():
-				# print("resolving reference: ", dilemma.getReference())
-				newDilemma = adventure.findDilemmaWithID(dilemma.getReference())
-				if newDilemma != None:
-					# print("found dilemma: ", newDilemma.tostring())
-					item.setDilemma(copy.deepcopy(newDilemma))
-				else:
-					print("adventure supplied a None Dilemma searching for one")
-					
-			elif dilemma.hasActions(): 
-				for action in dilemma.getActions():
-					if action.hasDilemma():
-						self.__resolveJumps(adventure, action, action.getDilemma())
-				
 
 	def getAdventure(self):
 		adventure = self.__recursiveConstruction(None, self.root)
-		if adventure.hasDilemma():
-			self.__resolveJumps(adventure, adventure, adventure.getDilemma())
 		return adventure
 
 

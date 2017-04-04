@@ -32,26 +32,6 @@ class BCAdventure:
 	def hasDilemma(self):
 		return self.getDilemma() != None
 
-	def hasUnresolvedDilemmaReferenes(self):
-		if self.hasDilemma():
-			return self.__findUnresolvedDilemma(self.getDilemma())
-		else:
-			return False
-
-
-	def __findUnresolvedDilemma(self, dilemma):
-		if dilemma != None:
-			if dilemma.hasReference():
-				return True
-			elif dilemma.hasActions():
-				# hasSubUnresolvedDilemma = False
-				for action in dilemma.getActions():
-					if action.hasDilemma():
-						subDilemma = action.getDilemma()
-						if subDilemma.hasReference():
-							return True
-
-
 	# BCAdventure methods
 	def findDilemmaWithID(self, id):
 		return self.__recursiveFindSubDilemmaWithID(self.getDilemma(), id)
